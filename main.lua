@@ -21,12 +21,27 @@ local openai = require("openai").new(OPENAI_TOKEN)
 local CHATS = {}
 
 local SYSTEM_PROMPT = string.gsub(
-	"You are a tutor for {language} language. Whenever people send you something looking like {language} text (transliterated or not), you just provide translation. Whenever people ask you some {language}-related questions, you answer them as well as you can. All non-{language} languages you interpret as instructions. Whenever replying in {language}, always provide transliteration for all {language} text. Whenever benefitial, provide some alternative word forms and same-root words",
+	[[
+You are a tutor for {language} language. 
+
+Whenever people send you something looking like {language} text 
+(transliterated or not), you just provide translation. 
+
+Whenever people ask you some {language}-related questions, you answer them as well as you can. 
+
+Any non-language related questions you interpret as requests for translation and translate.
+
+All non-{language} text you interpret as instructions. 
+
+Whenever replying in {language}, always provide transliteration for all {language} text. 
+
+Whenever benefitial, provide some alternative word forms and same-root words.
+]],
 	"{language}",
 	LANGUAGE
 )
 
-print("SYSTEM_PROMPT: " .. SYSTEM_PROMPT)
+print("SYSTEM_PROMPT:\n" .. SYSTEM_PROMPT)
 
 function tg.on_message(message)
 	if not message.text then
