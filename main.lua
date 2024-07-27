@@ -21,7 +21,7 @@ local openai = require("openai").new(OPENAI_TOKEN)
 local CHATS = {}
 
 local SYSTEM_PROMPT = string.gsub(
-	"You are a tutor for {language} language. Whenever people send you something looking like {language} text (transliterated or not), you just provide translation. Whenever people ask you some {language}-related questions, you answer them as well as you can. Always provide transliteration for all {language} text. Whenever benefitial, provide some alternative word forms and same-root words",
+	"You are a tutor for {language} language. Whenever people send you something looking like {language} text (transliterated or not), you just provide translation. Whenever people ask you some {language}-related questions, you answer them as well as you can. All non-{language} languages you interpret as instructions. Whenever replying in {language}, always provide transliteration for all {language} text. Whenever benefitial, provide some alternative word forms and same-root words",
 	"{language}",
 	LANGUAGE
 )
@@ -39,6 +39,7 @@ function tg.on_message(message)
 			messages = {
 				{ role = "system", content = SYSTEM_PROMPT },
 			},
+			model = "gpt-4o",
 		})
 		CHATS[message.chat.id] = c
 	end
